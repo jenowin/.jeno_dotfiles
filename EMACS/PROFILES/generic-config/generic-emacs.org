@@ -1,0 +1,440 @@
+#+TITLE: Generic Emacs Configuration
+#+AUTHOR: Jenowin Jebadoss.A
+#+STARTUP: overview
+
+* Startup Performance
+#+begin_src emacs-lisp
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 50 1000 1000))
+
+;; Make gc pauses faster by decreasing the threshold.
+;;(setq gc-cons-threshold (* 2 1000 1000))
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+#+end_src
+
+* Disable build-in Settings
+#+begin_src emacs-lisp
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+(defun toggle-top-menu ()
+  "Run toggle-menu-bar-mode-from-frame and toggle-tool-bar-mode-from-frame"
+  (interactive)
+  (menu-bar-mode (if tool-bar-mode -1 1))
+  (tool-bar-mode (if tool-bar-mode -1 1)))
+(global-set-key (kbd "<f2>") 'toggle-top-menu)
+
+;;To completely turn off sounds in emacs-----
+(setq ring-bell-function 'ignore)
+
+;;prevent backup files
+(setq make-backup-files nil)
+
+#+end_src
+
+* Enable build-in settings
+#+begin_src emacs-lisp
+;;set relative numbers
+;;(global-display-line-numbers-mode 1)
+;;(setq display-line-numbers-type 'relative)
+;;(add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)  ))
+
+;; relative number on normal mode and absolute number for insert mode--------------------------------------
+;; (add-hook 'prog-mode-hook ' (lambda ()
+;;
+;; (add-hook 'evil-insert-state-entry-hook (lambda () (display-line-numbers-mode -1) (setq display-line-numbers-type 'absolute) (display-line-numbers-mode 1) ))
+;; (add-hook 'evil-normal-state-entry-hook (lambda () (display-line-numbers-mode -1) (setq display-line-numbers-type 'relative) (display-line-numbers-mode 1) ))
+;;
+;; ))
+;;---------------------------------------------------------------------------------------------------------
+
+;; hilight current line
+;;(global-hl-line-mode 1)
+
+;;word wrap Current Line
+;;(global-visual-line-mode 1)
+
+;;turn on Hightlighting - matching - Parantheseis by default
+(show-paren-mode 1)
+
+;;creating pair brackets by auto
+(electric-pair-mode 1)
+
+;;shows battery level(%)
+;;(display-battery-mode 1)
+
+;;shows size indication
+;;(size-indication-mode 1)
+
+;;shows line
+;;(line-number-mode 1)
+
+;;shows line+coloumn
+(column-number-mode 1)
+
+;;shows time
+;;(display-time-mode 1)
+
+#+end_src
+
+* editor tweaks
+#+begin_src emacs-lisp
+
+;;The file name and the major mode as window name (my conf)
+(setq-default frame-title-format '("%f [%m]"))
+
+;;increse-decrese global font size using wheels`-------------------------
+(defun font-big ()
+  (interactive)
+  (set-face-attribute 'default nil :height
+                      (+ (face-attribute 'default :height) 10)))
+
+(defun font-small ()
+  (interactive)
+  (set-face-attribute 'default nil :height
+                      (- (face-attribute 'default :height) 10)))
+
+(global-set-key (kbd "<C-wheel-down>") 'font-small)
+(global-set-key (kbd "<C-wheel-up>") 'font-big)
+
+
+;;move single line up and down(Alt + up or down)------------------------------------------------
+(defun move-line-up ()
+  "Move up the current line."
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (indent-according-to-mode))
+
+(defun move-line-down ()
+  "Move down the current line."
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+(global-set-key [M-up]  'move-line-up)
+(global-set-key [M-down]  'move-line-down)
+
+
+;; Emacs mode for hiding the mode-line
+(defvar-local hidden-mode-line-mode nil)
+
+(define-minor-mode hidden-mode-line-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global t
+  :variable hidden-mode-line-mode
+  :group 'editing-basics
+  (if hidden-mode-line-mode
+      (setq hide-mode-line mode-line-format
+            mode-line-format nil)
+    (setq mode-line-format hide-mode-line
+          hide-mode-line nil))
+  (force-mode-line-update)
+  ;; Apparently force-mode-line-update is not always enough to
+  ;; redisplay the mode-line
+  (redraw-display)
+  (when (and (called-interactively-p 'interactive)
+             hidden-mode-line-mode)
+    (run-with-idle-timer
+     0 nil 'message
+     (concat "Hidden Mode Line Mode enabled.  "
+             "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+
+;;for smooth scrolling----------------------------------------
+;;(setq scroll-conservatively 101) ;; value greater than 100 gets rid of half page jumping
+;;------------------------------------------------------------
+
+;;By default in Emacs, we don't have ability to select text, and then start typing and our new text replaces the selection.  Let's fix that!
+(delete-selection-mode t)
+
+;;trim trailing white space on save
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; change all prompts to y or n instead of yes or no
+;;(fset 'yes-or-no-p 'y-or-n-p)
+; for Emacs28, replaces the defalias below
+(setq use-short-answers t)
+;; (defalias 'yes-or-no-p 'y-or-n-p)
+
+;;only cycle through buffers with associated files.
+(set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
+
+;; Don't show *Buffer list* when opening multiple files at the same time(while opening file directly from terminal).
+(setq inhibit-startup-buffer-menu t)
+
+;; Show only one active window when opening multiple files at the same time(while opening file directly from terminal).
+(add-hook 'window-setup-hook 'delete-other-windows)
+
+;;Don't show initial Emacs-logo and info
+(setq inhibit-splash-screen t)
+
+;;disable startup screen while opening a file directly from explorer or terminal---------
+"Startup screen inhibitor for `command-line-functions`. Inhibits startup screen on the first unrecognised option."
+(defun my-inhibit-startup-screen-always ()
+  (ignore (setq inhibit-startup-screen t)) )
+
+(add-hook 'command-line-functions #'my-inhibit-startup-screen-always)
+
+;; auto refresh all buffers when changed from outside.
+(global-auto-revert-mode t)
+
+;; set indentation for js mode(changing the default indentation)
+(setq js-indent-level 2)
+
+;;set bookmark file location
+(setq bookmark-default-file "~/.emacs.d/bookmarks.txt")
+
+;;auto save bookmarks file when modified
+(setq bookmark-save-flag 1)
+
+
+;; recentf (Built-in)
+;;--------------------------------------------------------------------------
+(require 'recentf)
+
+;; get rid of `find-file-read-only' and replace it with something
+;; more useful.
+(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+;;(nvmap :prefix "SPC" "f r"   '( ido-recentf-open :which-key "Find recent file"))
+
+;; enable recent files mode.
+(recentf-mode t)
+
+;; 5 files ought to be enough.
+(setq recentf-max-saved-items 5)
+
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file"
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
+;;----------------------------------------------------------------------------
+
+#+end_src
+
+* Fonts
+** default font
+#+begin_src emacs-lisp
+;; set default font
+(cond
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+  (when (member "Consolas" (font-family-list))
+    (set-frame-font "Consolas 14" t t)))
+ ((string-equal system-type "darwin") ; macOS
+  (when (member "Menlo" (font-family-list))
+    (set-frame-font "Menlo 14" t t)))
+ ((string-equal system-type "gnu/linux") ; linux
+  (when (member "DejaVu Sans Mono" (font-family-list))
+    (set-frame-font "DejaVu Sans Mono 14" t t))))
+
+#+end_src
+
+** org fonts
+
++ Tip: you can use C-u C-x = (which runs the command what-cursor-position with a prefix argument) to show information about the character under the cursor, including the face which is being used for it. If you find a markup element which is not correctly configured, you can use this to know which face you have to customize.
+
+#+begin_src emacs-lisp
+;;Finally, we set up a nice proportional font, in different sizes, for the headlines. The fonts listed will be tried in sequence, and the first one found will be used. My current favorite is ET Book, feel free to add your own:
+
+(defun my/org-mode-fonts ()
+  (interactive)
+  (let* ((variable-tuple
+          (cond
+           ;;((x-list-fonts "ETBembo")         '(:font "ETBembo"))
+           ;;((x-list-fonts "Arial")         '(:font "ETBembo"))
+           ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+           ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+           ((x-list-fonts "Verdana")         '(:font "Verdana"))
+           ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+           (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+
+         ;; The org-mode default font (overides every other fonts in org mode with one font if we set the below)
+         (base-font-color     (face-foreground 'default nil 'default))
+         (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+
+    (custom-theme-set-faces
+     'user
+     `(org-level-8 ((t (,@headline ,@variable-tuple))))
+     `(org-level-7 ((t (,@headline ,@variable-tuple))))
+     `(org-level-6 ((t (,@headline ,@variable-tuple))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple))))
+     `(org-level-4 ((t (,@headline ,@variable-tuple ))))
+     `(org-level-3 ((t (,@headline ,@variable-tuple :height 0.9))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.25))))
+     `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+
+
+  (custom-theme-set-faces
+   'user
+   ;;'(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
+   '(variable-pitch ((t (:family "Calibri" :height 180 :weight thin))))
+   '(fixed-pitch ((t ( :family "consolas" :height 160)))))
+
+  ;; some tweaks to look  better
+  (add-hook 'org-mode-hook 'visual-line-mode)
+  (add-hook 'org-mode-hook 'variable-pitch-mode) ;; uses variable pitch fonts excluding headers and src blocks and affect font size for all fonts.
+  (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1) ))
+
+  ;;Configure faces for specific Org elements
+  (custom-theme-set-faces
+   'user
+   '(org-block ((t (:inherit fixed-pitch))))
+   '(org-code ((t (:inherit (shadow fixed-pitch)))))
+   '(org-document-info ((t (:foreground "dark orange"))))
+   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+   '(org-link ((t (:foreground "royal blue" :underline t))))
+   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-property-value ((t (:inherit fixed-pitch))) t)
+   '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+   '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+
+  )
+
+;;(my/org-mode-fonts)
+
+#+end_src
+
+** org tweaks
+#+begin_src emacs-lisp
+;; First, we ask org-mode to hide the emphasis markup (e.g. /.../ for italics, *...* for bold, etc.):
+(setq org-hide-emphasis-markers t)
+
+;;Then, we set up a font-lock substitution for list markers (I always use “-” for lists, but you can change this if you want) by replacing them with a centered-dot character:
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+;;(0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "➤"))))))
+
+
+;; disable <> auto pairing in electric-pair-mode for org-mode
+(add-hook 'org-mode-hook (lambda ()
+                           (setq-local electric-pair-inhibit-predicate
+                                       `(lambda (c)
+                                          (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+
+;;To make more horizontal space, the headlines are shifted by two characters. Configure org-indent-indentation-per-level variable for a different number.
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+;;displays the contents of code blocks in Org-mode files using the major-mode of the code.
+(setq org-src-fontify-natively t)
+
+;;changes the behavior of TAB to as if it were used in the appropriate major mode.
+(setq org-src-tab-acts-natively t)
+
+(setq org-src-preserve-indentation nil
+      org-edit-src-content-indentation 0
+      )
+
+(setq org-image-actual-width nil)
+
+(setq org-support-shift-select t)
+#+end_src
+
+* keybindings
+#+begin_src emacs-lisp
+;; default key bindings
+(global-set-key (kbd "C-c w") #'toggle-word-wrap)
+(global-set-key (kbd "C-c t") #'toggle-truncate-lines)
+
+#+end_src
+
+* jeno's key
+#+begin_src emacs-lisp
+(define-minor-mode jeno-key-mode
+  "This is jenowin's key bindings!"
+  :lighter " Jeno_Keys"
+  :keymap (let ((map (make-sparse-keymap)))
+
+            ;;spliting windows
+            (define-key map (kbd "C-1") #'delete-other-windows)
+            (define-key map (kbd "C-2") #'split-window-below)
+            (define-key map (kbd "C-3") #'split-window-right)
+            (define-key map (kbd "C-0") #'delete-window)
+
+            ;;moving cursors - conflict with emmet auto completion C-j.
+            ;;(define-key map (kbd "C-h") #'windmove-left)  ; move to left window
+            ;;(define-key map (kbd "C-l") #'windmove-right) ; move to right window
+            ;;(define-key map (kbd "C-k") #'windmove-up)    ; move to upper window
+            ;;(define-key map (kbd "C-j") #'windmove-down)  ; move to lower window
+
+            ;;resizeing windows
+            (define-key map (kbd "C-{") #'shrink-window-horizontally)
+            (define-key map (kbd "C-}") #'enlarge-window-horizontally)
+            (define-key map (kbd "C-|") 'enlarge-window)
+
+            ;;switching buffers
+            (define-key map (kbd "C-S-P") #'previous-buffer)
+            (define-key map (kbd "C-S-N") #'next-buffer)
+
+            ;;fast scroll
+            (define-key map (kbd "M-k") (kbd "{"))
+            (define-key map (kbd "M-j") (kbd "}"))
+
+            map) )
+
+;; make it available to all buffers if needed.
+(define-globalized-minor-mode global-jeno-key-mode jeno-key-mode
+  (lambda () (jeno-key-mode 1)) )
+;;(add-hook 'x-mode-hook 'jeno-key-mode)
+
+(provide 'jeno-key-mode)
+(global-set-key (kbd "C-c j") #'global-jeno-key-mode)
+
+#+end_src
+
+* Language snippets
+#+begin_src emacs-lisp
+;;initial or required templates
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c 0")  (lambda() (interactive) (insert-file "~/.vim/snippets/c++/default.cpp")))
+            (local-set-key (kbd "C-c 1")  (lambda() (interactive) (insert-file "~/.vim/snippets/c++/temp1.cpp")))
+            (local-set-key (kbd "C-c 2")  (lambda() (interactive) (insert-file "~/.vim/snippets/c++/temp2.cpp")))
+            ))
+
+(add-hook 'c-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c 0")  (lambda() (interactive) (insert-file "~/.vim/snippets/c/default.c")))
+            (local-set-key (kbd "C-c 1")  (lambda() (interactive) (insert-file "~/.vim/snippets/c/temp1.c")))
+            (local-set-key (kbd "C-c 2")  (lambda() (interactive) (insert-file "~/.vim/snippets/c/temp2.c")))
+            ))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c 0")  (lambda() (interactive) (insert-file "~/.vim/snippets/python/default.py")))
+            ;;(local-set-key (kbd "C-c 1")  (lambda() (interactive) (insert-file "~/.vim/snippets/c/temp1.py")))
+            ;;(local-set-key (kbd "C-c 2")  (lambda() (interactive) (insert-file "~/.vim/snippets/c/temp2.py")))
+            ))
+
+(add-hook 'html-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c 0")  (lambda() (interactive) (insert-file "~/.vim/snippets/html/default.html") (progn (next-line 9) (indent-for-tab-command) )))
+            (local-set-key (kbd "C-c 1")  (lambda() (interactive) (insert-file "~/.vim/snippets/html/temp1.html") (progn (next-line 10) (indent-for-tab-command)  )))
+            (local-set-key (kbd "C-c 2")  (lambda() (interactive) (insert-file "~/.vim/snippets/html/temp2.html") (progn (next-line 11) (indent-for-tab-command)) ))
+            ))
+
+(add-hook 'js-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c 0")  (lambda() (interactive) (insert-file "~/.vim/snippets/javascript/temp1.js") (next-line 8) ))
+            (local-set-key (kbd "C-c 1")  (lambda() (interactive) (insert-file "~/.vim/snippets/javascript/temp2.js") (progn (next-line 9) (indent-for-tab-command)  )))
+            ;;(local-set-key (kbd "C-c 2")  (lambda() (interactive) (insert-file "~/.vim/snippets/html/temp2.html") (progn (next-line 11) (indent-for-tab-command)) ))
+            ))
+
+#+end_src
