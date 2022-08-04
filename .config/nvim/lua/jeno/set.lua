@@ -25,10 +25,14 @@ opt.laststatus=3            -- Set global statusline
 opt.termguicolors = true
 --vim.cmd[[color slate]]
 vim.cmd[[color desert]]
--- getting crispy sharp line while splitting screens.
---vim.cmd([[highlight WinSeparator guibg=none]]) --works only after setting the colorscheme 
-vim.api.nvim_set_hl(0, "WinSeparator", { guibg=none }) --same as :highlight WinSeparator guibg=none
-vim.api.nvim_set_hl(0, "SignColumn", { guibg=dark }) --set color for the signcolumn.
+-- guibg=none set the default colorscheme's background (set after colorscheme)
+--vim.cmd([[highlight WinSeparator guibg=none]])
+vim.api.nvim_set_hl(0, "WinSeparator", { guibg=none }) -- getting crispy sharp line while splitting screens.
+vim.api.nvim_set_hl(0, "SignColumn", { guibg=none })
+
+--vim.cmd([[autocmd ColorScheme * highlight SignColumn guibg=none]])
+vim.api.nvim_create_autocmd('ColorScheme', { command = "highlight SignColumn guibg=none" })
+
 opt.guicursor = ""
 
 
@@ -40,9 +44,7 @@ opt.autoread = true
 opt.mouse = 'a'                       -- Enable mouse support
 opt.clipboard = 'unnamedplus'         -- Copy/paste to system clipboard
 opt.swapfile = false                  -- Don't use swapfile
-opt.completeopt = 'menuone,noinsert,noselect'  -- better Autocomplete options
-
--- go to previous/next line with h,l,left arrow and right arrow
+opt.completeopt = 'menuone,noinsert,noselect'  -- better Autocomplete options go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
 opt.whichwrap:append "<>[]hl"
 
