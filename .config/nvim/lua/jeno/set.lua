@@ -9,6 +9,7 @@ g.mapleader = " "
 opt.number = true           -- Show line number
 opt.numberwidth = 2         -- width of the line numbers, not the margin
 opt.signcolumn = "yes"      -- space on the left of the line numbers.
+opt.fillchars = {eob = " "} -- replace the tilde(~) with space
 opt.showmatch = true        -- Highlight matching parenthesis
 opt.foldmethod = 'marker'   -- Enable folding (default 'foldmarker')
 --opt.colorcolumn = '80'      -- Line lenght marker at 80 columns
