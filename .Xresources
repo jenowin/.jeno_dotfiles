@@ -25,7 +25,12 @@ XTerm.vt100.backarrowKey: false
 XTerm.ttyModes: erase ^?
 
 !! Scrolling
-XTerm.vt100.saveLines: 4096
+XTerm.vt100.saveLines: 9999
+xterm.vt100.scrollKey: true
+xterm.vt100.jumpScroll: true
+xterm.vt100.multiScroll: true
+xterm.vt100.scrollTtyOutput: false
+
 
 !! Scrollbar
 XTerm.vt100.scrollBar: true
