@@ -21,6 +21,7 @@ opt.smartcase = true        -- Ignore lowercase for the whole pattern
 opt.linebreak = true        -- Wrap on word boundary
 opt.termguicolors = true    -- Enable 24-bit RGB colors
 opt.laststatus=3            -- Set global statusline
+opt.guicursor = ""
 
 opt.termguicolors = true
 --vim.cmd[[color slate]]
@@ -33,8 +34,6 @@ vim.api.nvim_set_hl(0, "SignColumn", { guibg=none })
 --vim.cmd([[autocmd ColorScheme * highlight SignColumn guibg=none]])
 vim.api.nvim_create_autocmd('ColorScheme', { command = "highlight SignColumn guibg=none" })
 
-opt.guicursor = ""
-
 
 -----------------------------------------------------------
 -- General
@@ -42,14 +41,14 @@ opt.guicursor = ""
 opt.autochdir = true
 opt.autoread = true
 opt.mouse = 'a'                       -- Enable mouse support
+opt.scrolloff=4
 opt.clipboard = 'unnamedplus'         -- Copy/paste to system clipboard
 opt.swapfile = false                  -- Don't use swapfile
 opt.completeopt = 'menuone,noinsert,noselect'  -- better Autocomplete options go to previous/next line with h,l,left arrow and right arrow
+
+-- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
 opt.whichwrap:append "<>[]hl"
-
-
-opt.scrolloff=4
 
 
 -----------------------------------------------------------
