@@ -53,3 +53,7 @@ opt.smarttab = true   --set tabs for a shifttabs logic
 
 -- Disable nvim intro
 opt.shortmess:append "sI"
+
+-- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+-- delays and poor user experience.
+vim.opt.updatetime = 50
