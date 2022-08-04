@@ -7,6 +7,8 @@ g.mapleader = " "
 -- Neovim UI
 -----------------------------------------------------------
 opt.number = true           -- Show line number
+opt.numberwidth = 2         -- width of the line numbers, not the margin
+opt.signcolumn = "yes"      -- space on the left of the line numbers.
 opt.showmatch = true        -- Highlight matching parenthesis
 opt.foldmethod = 'marker'   -- Enable folding (default 'foldmarker')
 --opt.colorcolumn = '80'      -- Line lenght marker at 80 columns
@@ -24,6 +26,7 @@ vim.cmd[[color desert]]
 -- getting crispy sharp line while splitting screens.
 --vim.cmd([[highlight WinSeparator guibg=none]]) --works only after setting the colorscheme 
 vim.api.nvim_set_hl(0, "WinSeparator", { guibg=none }) --same as :highlight WinSeparator guibg=none
+vim.api.nvim_set_hl(0, "SignColumn", { guibg=dark }) --set color for the signcolumn.
 opt.guicursor = ""
 
 
