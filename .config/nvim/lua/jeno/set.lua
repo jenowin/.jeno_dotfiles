@@ -32,7 +32,7 @@ vim.api.nvim_set_hl(0, "WinSeparator", { guibg=none }) -- getting crispy sharp l
 vim.api.nvim_set_hl(0, "SignColumn", { guibg=none })
 
 --vim.cmd([[autocmd ColorScheme * highlight SignColumn guibg=none]])
-vim.api.nvim_create_autocmd('ColorScheme', { command = "highlight SignColumn guibg=none" })
+vim.api.nvim_create_autocmd('ColorScheme', { command = "highlight SignColumn guibg=none | highlight WinSeparator guibg=none" })
 
 
 -----------------------------------------------------------
