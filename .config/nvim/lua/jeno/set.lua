@@ -26,10 +26,20 @@ local options = {
   autochdir = true,
   autoread = true,
   mouse = 'a',                       -- Enable mouse support
-  scrolloff=4,
+  wrap = false,                      -- display lines as one long line
+  scrolloff=8,
+  sidescrolloff = 8,
   clipboard = 'unnamedplus',         -- Copy/paste to system clipboard
+  backup = false,                    -- Dont't create backup file
   swapfile = false,                  -- Don't use swapfile
-  completeopt = 'menuone,noinsert,noselect',  -- better Autocomplete options go to previous/next line with h,l,left arrow and right arrow
+  --undofile = true,                   -- enable persistent undo
+  fileencoding = "utf-8",            -- the encoding written to a file
+  completeopt = { 
+    "menuone",
+    "noinsert",
+    "noselect",
+  },                                 -- better Autocomplete options
+
 
   expandtab = true,  --will convert tabs to spaces
   autoindent = true, --will keep indentation level from previous line
