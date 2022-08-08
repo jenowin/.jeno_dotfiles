@@ -27,6 +27,7 @@ zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
 _comp_options+=(globdots)
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
 
 #keybindings
 bindkey "^[[1;5C" forward-word
@@ -34,6 +35,7 @@ bindkey "^[[1;5D" backward-word
 bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
+bindkey '^[[Z' reverse-menu-complete
 
 plugins=( 
     # other plugins...
