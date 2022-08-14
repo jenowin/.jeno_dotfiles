@@ -329,8 +329,8 @@
                                        `(lambda (c)
                                           (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
-;;To make more horizontal space, the headlines are shifted by two characters. Configure org-indent-indentation-per-level variable for a different number.
-(add-hook 'org-mode-hook 'org-indent-mode)
+;;To make more horizontal space, the headlines are shifted by two characters. Configure org-indent-indentation-per-level variable for a different number(org-indent-mode)).
+(add-hook 'org-mode-hook (lambda() (org-indent-mode) (toggle-truncate-lines -1) (toggle-word-wrap 1) ))
 
 ;;displays the contents of code blocks in Org-mode files using the major-mode of the code.
 (setq org-src-fontify-natively t)
@@ -345,6 +345,7 @@
 (setq org-image-actual-width nil)
 
 (setq org-support-shift-select t)
+
 #+end_src
 
 * keybindings
