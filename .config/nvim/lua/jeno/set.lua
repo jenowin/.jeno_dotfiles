@@ -36,8 +36,8 @@ local options = {
   fileencoding = "utf-8",            -- the encoding written to a file
   completeopt = { 
     "menuone",
-    "noinsert",
-    "noselect",
+    --"noinsert",
+    --"noselect",
   },                                 -- better Autocomplete options
 
 
@@ -58,8 +58,8 @@ opt.whichwrap:append "<>[]hl" -- go to previous/next line with h,l,left
 opt.shortmess:append "sI" -- Disable nvim intro
 opt.updatetime = 50 -- (default is 4000 ms = 4 s) leads to noticeable delays and poor user experience.
 
---vim.cmd[[color slate]]
-vim.cmd[[color desert]]
+vim.cmd[[color slate]]
+--vim.cmd[[color desert]]
 -- guibg=none set the default colorscheme's background (set after colorscheme)
 --vim.cmd([[highlight WinSeparator guibg=none]])
 vim.api.nvim_set_hl(0, "WinSeparator", { guibg=none }) -- getting crispy sharp line while splitting screens.
