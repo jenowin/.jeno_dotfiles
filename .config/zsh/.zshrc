@@ -11,15 +11,20 @@ setopt interactive_comments
 # History in cache directory:
 HISTSIZE=10000000
 SAVEHIST=10000000
-HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+HISTFILE="$HOME/.cache/zsh/history"
+setopt appendhistory
 
-# Load aliases and shortcuts if existent.
-zsh_source_file() {
-    [ -f "$1" ] && source "$1"
-    return 0 # avoid non-zero return codes when file does not exists
-}
-zsh_source_file "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
-zsh_source_file "${XDG_CONFIG_HOME:-$HOME/.config}/shell/functionrc"
+# elegant functions
+source "$ZDOTDIR/functionrc"
+
+# source external files.
+zsh_add_file "$ZDOTDIR/aliasrc"
+zsh_add_file "$ZDOTDIR/functionrc"
+
+# Plugins
+zsh_add_plugin "zsh-users/zsh-autosuggestions"
+zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
+zsh_add_plugin "agkozak/zsh-z"
 
 # Basic auto/tab complete:
 autoload -U compinit
@@ -37,7 +42,11 @@ bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
 bindkey '^[[Z' reverse-menu-complete
 
+
 plugins=( 
     # other plugins...
+    git
+    z
     zsh-autosuggestions
+    zsh-syntax-highlighting
 )
