@@ -1,3 +1,5 @@
+#!/usr/bin/zsh
+#
 # eval "$(oh-my-posh init zsh --config ~/.poshthemes/sorin.omp.json)"
 # eval "$(oh-my-posh init zsh --config ~/.poshthemes/star.omp.json)"
 # eval "$(oh-my-posh init zsh --config ~/.poshthemes/atomicBit.omp.json)"
