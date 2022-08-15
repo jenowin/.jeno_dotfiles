@@ -16,7 +16,7 @@ alias q=exit
 alias em="emacs --with-profile jen "
 alias emn="emacs --with-profile jen -nw"
 alias at='alacritty-themes'
-alias df="/usr/bin/git --git-dir=$HOME/.jeno_dotfiles/ --work-tree=$HOME"
+alias dtf="/usr/bin/git --git-dir=$HOME/.jeno_dotfiles/ --work-tree=$HOME"
 
 # xorg brightness
 function xbr() {
