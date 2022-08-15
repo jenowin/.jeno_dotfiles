@@ -1,6 +1,6 @@
-#! /usr/bin/sh
+#!/usr/bin/sh
 
-zsh_add_file() {
+function zsh_add_file() {
     [ -f "$1" ] && source "$1"
 }
 
@@ -14,4 +14,22 @@ function zsh_add_plugin() {
     else
         git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
     fi
+}
+
+
+# xorg brightness
+function xbr() {
+  # set brightness for all x screens that are connected.
+  if [ $1 "==" 'a' ]; then
+    for screen in $(xrandr |awk '/connected/{if($2 == "connected")print $1}')
+    do
+      xrandr --output $screen --brightness $2
+    done
+  else
+    xrandr --output $1 --brightness $2
+  fi
+}
+
+function xrr() {
+  xset r rate 350 50
 }
