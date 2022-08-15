@@ -1,4 +1,4 @@
-#!/bin/sh
+#!usr/bin/sh
 
 alias vc='nvim --clean -c "syntax enable | set nu | set mouse=a | set clipboard=unnamed | set expandtab | set autoindent | set shiftwidth=2 | set softtabstop=2 | set tabstop=2 | set smarttab | set scrolloff=4"'
 alias brc="nvim ~/.bashrc"
@@ -8,4 +8,4 @@ alias q=exit
 alias em="emacs --with-profile jen "
 alias emn="emacs --with-profile jen -nw"
 alias at='alacritty-themes'
-alias df="/usr/bin/git --git-dir=$HOME/.jeno_dotfiles/ --work-tree=$HOME"
+alias dtf="/usr/bin/git --git-dir=$HOME/.jeno_dotfiles/ --work-tree=$HOME"
