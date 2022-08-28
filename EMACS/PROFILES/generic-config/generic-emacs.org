@@ -196,6 +196,9 @@
 ;;Use spaces instead of tabs for indentation
 (setq-default indent-tabs-mode nil)
 
+;; Default Coding System
+(set-default-coding-systems 'utf-8)
+
 ;; set indentation for js mode(changing the default indentation)
 (setq js-indent-level 2)
 
