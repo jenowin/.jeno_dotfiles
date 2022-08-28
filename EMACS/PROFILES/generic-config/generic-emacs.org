@@ -188,10 +188,13 @@
 (add-hook 'command-line-functions #'my-inhibit-startup-screen-always)
 
 ;; auto refresh or revert all buffers when changed from outside.
-(global-auto-revert-mode t)
+(setq global-auto-revert-mode t)
 
 ;; auto Refresh or Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
+
+;;Use spaces instead of tabs for indentation
+(setq-default indent-tabs-mode nil)
 
 ;; set indentation for js mode(changing the default indentation)
 (setq js-indent-level 2)
