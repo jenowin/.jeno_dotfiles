@@ -154,6 +154,13 @@
 
 ;;for smooth scrolling----------------------------------------
 ;;(setq scroll-conservatively 101) ;; value greater than 100 gets rid of half page jumping
+
+;; Improve scrolling.
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+
 ;;------------------------------------------------------------
 
 ;;By default in Emacs, we don't have ability to select text, and then start typing and our new text replaces the selection.  Let's fix that!
