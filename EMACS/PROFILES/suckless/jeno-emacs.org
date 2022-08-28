@@ -139,6 +139,21 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
 #+end_src
 
 * themes
+** simple tweak
+#+begin_src  emacs-lisp
+;; Set Default Window (Emacs Frame) Size
+ (if (display-graphic-p)
+       (setq initial-frame-alist
+             '(
+               (tool-bar-lines . 0)
+               (width . 106) ; chars
+               (height . 30) ; lines
+               ;;(background-color . "honeydew")
+               (left . 50)
+               (top . 50))) )
+ (setq default-frame-alist initial-frame-alist)
+
+#+end_src
 ** naysayer theme
 #+begin_src emacs-lisp
 ;;(use-package naysayer-theme
