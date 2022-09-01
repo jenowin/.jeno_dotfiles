@@ -142,39 +142,41 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
 ** simple tweak
 #+begin_src  emacs-lisp
 ;; Set Default Window (Emacs Frame) Size
- (if (display-graphic-p)
-       (setq initial-frame-alist
-             '(
-               (tool-bar-lines . 0)
-               (width . 106) ; chars
-               (height . 30) ; lines
-               ;;(background-color . "honeydew")
-               (left . 50)
-               (top . 50))) )
- (setq default-frame-alist initial-frame-alist)
+;; (if (display-graphic-p)
+;;       (setq initial-frame-alist
+;;             '(
+;;               (tool-bar-lines . 0)
+;;               (width . 106) ; chars
+;;               (height . 30) ; lines
+;;               ;;(background-color . "honeydew")
+;;               (left . 50)
+;;               (top . 50))) )
+;; (setq default-frame-alist initial-frame-alist)
 
+;;(setq initial-frame-alist ' ( (background-color . "honeydew")))
 #+end_src
+
 ** naysayer theme
-#+begin_src emacs-lisp
-;;(use-package naysayer-theme
-;;  :ensure t
-;;  :init
-;;  :config
-;;  (load-theme 'naysayer t))
+#+begin_src
+(use-package naysayer-theme
+  :ensure t
+  :init
+  :config
+  (load-theme 'naysayer t))
 #+end_src
 
 ** tweaked naysayer theme like jonathan blow
-#+begin_src emacs-lisp
-;;(add-to-list 'custom-theme-load-path "~/.emacs.d/user_packages/naysayer-theme-tweaked.el/")
-;;(load-theme 'naysayer t)
+#+begin_src
+(add-to-list 'custom-theme-load-path "~/.emacs.d/user_packages/naysayer-theme-tweaked.el/")
+(load-theme 'naysayer t)
 #+end_src
 
 ** vscode theme
-#+begin_src emacs-lisp
-;;(use-package vscode-dark-plus-theme
-;;  :ensure t
-;;  :config
-;;  (load-theme 'vscode-dark-plus t))
+#+begin_src
+(use-package vscode-dark-plus-theme
+  :ensure t
+  :config
+  (load-theme 'vscode-dark-plus t))
 #+end_src
 
 ** modus themes
@@ -338,7 +340,7 @@ Exclude org mode fonts in modus-themes
 #+end_src
 
 * My Mode line tweaks
-#+begin_src emacs-lisp
+#+begin_src
 
 ;; ref https://www.gonsie.com/blorg/modeline.html
 ;; ref http://doc.endlessparentheses.com/Fun/set-face-attribute.html
@@ -399,6 +401,26 @@ Exclude org mode fonts in modus-themes
 #+begin_src emacs-lisp
 (use-package powershell
   :ensure t )
+#+end_src
+
+** csharp
+#+begin_src emacs-lisp
+(use-package csharp-mode
+  :ensure t
+  :config
+  ;;(add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-tree-sitter-mode))
+
+  ;;Alternatively, you can add them to your common C mode hook, which runs for all C mode-related modes: C, C++, Objective-C, Java, C#, and more:
+  (defun my-c-mode-common-hook ()
+
+    ;; Set indentation level to 2 spaces (instead of 4)
+    (setq c-basic-offset 2)
+
+    ;;  Set the extra indentation before a substatement (e.g. the opening brace in the consequent block of an if statement) to 0 (instead of '+)
+    ;;(c-set-offset 'substatement-open 0)
+    )
+  (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+  )
 #+end_src
 
 * experiment
