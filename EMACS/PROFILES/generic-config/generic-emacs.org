@@ -29,7 +29,7 @@
 (dolist (mode '(text-mode-hook
                 prog-mode-hook
                 conf-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 1) (hl-line-mode))))
+  (add-hook mode (lambda () (display-line-numbers-mode 1) (hl-line-mode) )))
 
 ;; relative number on normal mode and absolute number for insert mode--------------------------------------
 ;; (add-hook 'prog-mode-hook ' (lambda ()
@@ -43,8 +43,13 @@
 ;; hilight current line
 ;;(global-hl-line-mode 1)
 
-;;word wrap Current Line
-;;(global-visual-line-mode 1)
+;;Emacs can display long lines by truncation
+;;(toggle-truncate-lines 1)
+
+;; word wrap Current Line
+;;(toggle-word-wrap 1) ;; with fringe indicators
+;;(visual-line-mode 1) ;; without fringe indicators
+;;(setq-default word-wrap t) ;; enable globally(but not works in org mode)
 
 ;;turn on Hightlighting - matching - Parantheseis by default
 (show-paren-mode 1)
@@ -67,13 +72,74 @@
 ;;shows time
 ;;(display-time-mode 1)
 
+
+;;for smooth scrolling----------------------------------------
+;;(setq scroll-conservatively 101) ;; value greater than 100 gets rid of half page jumping
+
+;; Improve scrolling.
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+;;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+;;(setq scroll-step 1) ;; keyboard scroll one line at a time
+
+;;By default in Emacs, we don't have ability to select text, and then start typing and our new text replaces the selection.  Let's fix that!
+(delete-selection-mode t)
+
+;;trim trailing white space on save
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; change all prompts to y or n instead of yes or no
+;;(fset 'yes-or-no-p 'y-or-n-p)
+; for Emacs28, replaces the defalias below
+(setq use-short-answers t)
+;; (defalias 'yes-or-no-p 'y-or-n-p)
+
+;;only cycle through buffers with associated files.
+(set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
+
+;;Don't show initial Emacs-logo and info
+(setq inhibit-splash-screen t)
+
+;; Don't show *Buffer list* when opening multiple files at the same time(while opening file directly from terminal).
+(setq inhibit-startup-buffer-menu t)
+
+;; Show only one active window when opening multiple files at the same time(while opening file directly from terminal).
+(add-hook 'window-setup-hook 'delete-other-windows)
+
+;; auto refresh or revert all buffers when changed from outside.
+(setq global-auto-revert-mode t)
+
+;; auto Refresh or Revert Dired and other buffers
+(setq global-auto-revert-non-file-buffers t)
+
+;; Default Coding System
+(set-default-coding-systems 'utf-8)
+
+;;Use spaces instead of tabs for indentation
+(setq-default indent-tabs-mode nil)
+
+;; set indentation for js mode(changing the default indentation)
+(setq js-indent-level 2)
+
+;;set bookmark file location
+(setq bookmark-default-file "~/.emacs.d/bookmarks.txt")
+
+;;auto save bookmarks file when modified
+(setq bookmark-save-flag 1)
+
+;;To completely turn off sounds in emacs-----
+(setq ring-bell-function 'ignore)
+
+;;prevent backup files
+(setq make-backup-files nil)
 #+end_src
 
 * editor tweaks
 #+begin_src emacs-lisp
 
-;;The file name and the major mode as window name (my conf)
-(setq-default frame-title-format '("%f [%m]"))
+;;Display buffer name in frame titles
+;;(setq frame-title-format '("" invocation-name ": " (:eval (replace-regexp-in-string "^ +" "" (buffer-name)))))
+(setq frame-title-format '("Editor MACroS" ": " (:eval (replace-regexp-in-string "^ +" "" (buffer-name)))))
 
 ;;increse-decrese global font size using wheels`-------------------------
 (defun font-big ()
@@ -135,67 +201,6 @@
      (concat "Hidden Mode Line Mode enabled.  "
              "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
-;;for smooth scrolling----------------------------------------
-;;(setq scroll-conservatively 101) ;; value greater than 100 gets rid of half page jumping
-
-;; Improve scrolling.
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-;;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-;;(setq scroll-step 1) ;; keyboard scroll one line at a time
-
-;;------------------------------------------------------------
-
-;;By default in Emacs, we don't have ability to select text, and then start typing and our new text replaces the selection.  Let's fix that!
-(delete-selection-mode t)
-
-;;trim trailing white space on save
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; change all prompts to y or n instead of yes or no
-;;(fset 'yes-or-no-p 'y-or-n-p)
-; for Emacs28, replaces the defalias below
-(setq use-short-answers t)
-;; (defalias 'yes-or-no-p 'y-or-n-p)
-
-;;only cycle through buffers with associated files.
-(set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
-
-;;Don't show initial Emacs-logo and info
-(setq inhibit-splash-screen t)
-
-;; Don't show *Buffer list* when opening multiple files at the same time(while opening file directly from terminal).
-(setq inhibit-startup-buffer-menu t)
-
-;; Show only one active window when opening multiple files at the same time(while opening file directly from terminal).
-(add-hook 'window-setup-hook 'delete-other-windows)
-
-;; auto refresh or revert all buffers when changed from outside.
-(setq global-auto-revert-mode t)
-
-;; auto Refresh or Revert Dired and other buffers
-(setq global-auto-revert-non-file-buffers t)
-
-;; Default Coding System
-(set-default-coding-systems 'utf-8)
-
-;;Use spaces instead of tabs for indentation
-(setq-default indent-tabs-mode nil)
-
-;; set indentation for js mode(changing the default indentation)
-(setq js-indent-level 2)
-
-;;set bookmark file location
-(setq bookmark-default-file "~/.emacs.d/bookmarks.txt")
-
-;;auto save bookmarks file when modified
-(setq bookmark-save-flag 1)
-
-;;To completely turn off sounds in emacs-----
-(setq ring-bell-function 'ignore)
-
-;;prevent backup files
-(setq make-backup-files nil)
 
 ;; recentf (Built-in)
 ;;--------------------------------------------------------------------------
@@ -251,6 +256,9 @@
     )
   )
 
+(global-set-key (kbd "<C-S-wheel-up>")  (lambda () (interactive) (add_one 1)) )
+(global-set-key (kbd "<C-S-wheel-down>") (lambda () (interactive) (add_one -1)) )
+
 ;; Start the Emacs server from this instance so that all emacsclient calls are routed here
 (server-start)
 
@@ -294,7 +302,8 @@
 
          ;; The org-mode default font (overides every other fonts in org mode with one font if we set the below)
          (base-font-color     (face-foreground 'default nil 'default))
-         (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+         (headline           `(:inherit default :weight bold :foreground ,base-font-color))
+         )
 
     (custom-theme-set-faces
      'user
@@ -314,11 +323,6 @@
    ;;'(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
    '(variable-pitch ((t (:family "Calibri" :height 180 :weight thin))))
    '(fixed-pitch ((t ( :family "consolas" :height 160)))))
-
-  ;; some tweaks to look  better
-  (add-hook 'org-mode-hook 'visual-line-mode)
-  (add-hook 'org-mode-hook 'variable-pitch-mode) ;; uses variable pitch fonts excluding headers and src blocks and affect font size for all fonts.
-  (add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1) ))
 
   ;;Configure faces for specific Org elements
   (custom-theme-set-faces
@@ -361,14 +365,20 @@
                                           (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
 ;;To make more horizontal space, the headlines are shifted by two characters. Configure org-indent-indentation-per-level variable for a different number(org-indent-mode)).
-(add-hook 'org-mode-hook (lambda() (org-indent-mode) (toggle-truncate-lines -1) (toggle-word-wrap 1) ))
-
-;;displays the contents of code blocks in Org-mode files using the major-mode of the code.
-(setq org-src-fontify-natively t)
+(add-hook 'org-mode-hook (lambda()
+                           (org-indent-mode)
+                           (variable-pitch-mode 1) ;; uses variable pitch fonts excluding headers and src blocks and affect font size for all fonts.
+                           ))
 
 ;; Override modes in org mode.
 (dolist (mode '(org-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode -1) (hl-line-mode -1))))
+  (add-hook mode (lambda ()
+                   (display-line-numbers-mode -1)
+                   (hl-line-mode -1)
+                   )))
+
+;;displays the contents of code blocks in Org-mode files using the major-mode of the code.
+(setq org-src-fontify-natively t)
 
 ;;changes the behavior of TAB to as if it were used in the appropriate major mode.
 (setq org-src-tab-acts-natively t)
