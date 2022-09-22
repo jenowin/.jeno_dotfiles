@@ -256,8 +256,8 @@
     )
   )
 
-(global-set-key (kbd "<C-S-wheel-up>")  (lambda () (interactive) (add_one 1)) )
-(global-set-key (kbd "<C-S-wheel-down>") (lambda () (interactive) (add_one -1)) )
+(global-set-key (kbd "C-S-<mouse-4>")  (lambda () (interactive) (add_one 1)) )
+(global-set-key (kbd "C-S-<mouse-5>") (lambda () (interactive) (add_one -1)) )
 
 ;; Start the Emacs server from this instance so that all emacsclient calls are routed here
 (server-start)
