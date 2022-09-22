@@ -39,12 +39,35 @@
 (use-package evil
   :ensure t
   :init      ;; tweak evil's configuration before loading it
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  (setq evil-vsplit-window-right t)
-  (setq evil-split-window-below t)
-  (setq evil-want-C-u-scroll t)
-  (evil-mode))
+  (setq evil-want-integration t ;; This is optional since it's already set to t by default.
+        evil-want-keybinding nil
+        evil-vsplit-window-right t
+        evil-split-window-below t
+        evil-want-C-i-jump nil
+        evil-want-C-u-scroll t
+
+        ;; set cursor style
+        evil-emacs-state-cursor '(box)
+        evil-normal-state-cursor '(box)
+        evil-visual-state-cursor '(box)
+        evil-insert-state-cursor '(box))
+  :config
+  (evil-mode 1)
+  ;; toggle org headers(0-n) using tab key in normal mode
+  (with-eval-after-load 'evil-maps (define-key evil-motion-state-map (kbd "TAB") nil))
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  )
+
+;; use evil undo system
+(use-package undo-tree
+  :ensure t
+  :after evil
+  :diminish
+  :config
+  (evil-set-undo-system 'undo-tree)
+  (setq undo-tree-auto-save-history nil) ;; don't save file's undo-tree persistently.
+  (global-undo-tree-mode 1))
 
 ;;  (use-package evil-collection
 ;;  	     :ensure t
@@ -116,15 +139,17 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
 #+end_src
 
 ** j2s mode
-#+begin_src emacs-lisp
-;;(use-package js2-mode
-;;  :ensure t
-;;  :config
-;;  ;;If you want all js files to be open in js2-mode instead of the Emacs built-in js-mode)
-;;  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-;;  ;;Instead of using js2-mode as a JavaScript major mode, you could keep using the built-in js-mode and use that with js2-minor-mode to enable js2-mode’s syntax checking:
-;;  ;;(add-hook 'js-mode-hook 'js2-minor-mode)
-;;)
+#+begin_src
+(use-package js2-mode
+  :ensure t
+  :config
+  ;;If you want all js files to be open in js2-mode instead of the Emacs built-in js-mode)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  ;;Instead of using js2-mode as a JavaScript major mode, you could keep using the built-in js-mode and use that with js2-minor-mode to enable js2-mode’s syntax checking:
+  ;;(add-hook 'js-mode-hook 'js2-minor-mode)
+  ;; indentation
+  (setq js2-basic-offset 2)
+)
 #+end_src
 
 ** theme looper
@@ -135,23 +160,26 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
  :init
  :config
 (theme-looper-set-favorite-themes '(tango-dark wheatgrass broceliande))
-(global-set-key (kbd "C-|") 'theme-looper-select-theme))
+;;(global-set-key (kbd "C-|") 'theme-looper-select-theme))
+
+(global-set-key (kbd "C-`") 'theme-looper-select-theme-from-all) )
+
 #+end_src
 
 * themes
 ** simple tweak
-#+begin_src  emacs-lisp
-;; Set Default Window (Emacs Frame) Size
-;; (if (display-graphic-p)
-;;       (setq initial-frame-alist
-;;             '(
-;;               (tool-bar-lines . 0)
-;;               (width . 106) ; chars
-;;               (height . 30) ; lines
-;;               ;;(background-color . "honeydew")
-;;               (left . 50)
-;;               (top . 50))) )
-;; (setq default-frame-alist initial-frame-alist)
+#+begin_src emacs-lisp
+;; ;; Set Default Window (Emacs Frame) Size
+;;  (if (display-graphic-p)
+;;        (setq initial-frame-alist
+;;              '(
+;;                (tool-bar-lines . 0)
+;;                (width . 106) ; chars
+;;                (height . 30) ; lines
+;;                (background-color . "honeydew")
+;;                (left . 50)
+;;                (top . 50))) )
+;;  (setq default-frame-alist initial-frame-alist)
 
 ;;(setq initial-frame-alist ' ( (background-color . "honeydew")))
 #+end_src
@@ -428,4 +456,5 @@ Exclude org mode fonts in modus-themes
 toggle fonts for org mode using function , ref: system crafters secret to org presentation videos
 toggle to my/org-mode-fonts and defaults, so here we want to replace custom set font setting, so that it can toggled.(refer system crafters)
 
+similarly toggle colors of the org headers instead of setting persistently
 #+end_src
