@@ -395,9 +395,6 @@
 
 * keybindings
 #+begin_src emacs-lisp
-;; default key bindings
-(global-set-key (kbd "C-c w") #'toggle-word-wrap)
-(global-set-key (kbd "C-c t") #'toggle-truncate-lines)
 
 ;; ESC to act as quit(only for interactive situations not for combinatino of key sequence)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
