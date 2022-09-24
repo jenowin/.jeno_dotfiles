@@ -72,6 +72,15 @@
 ;;shows time
 ;;(display-time-mode 1)
 
+;;By default in Emacs, we don't have ability to select text, and then start typing and our new text replaces the selection.  Let's fix that!
+(delete-selection-mode t)
+
+;; auto refresh or revert all buffers when changed from outside.
+(global-auto-revert-mode t)
+
+;; auto Refresh or Revert Dired and other buffers
+(setq global-auto-revert-non-file-buffers t)
+
 
 ;;for smooth scrolling----------------------------------------
 ;;(setq scroll-conservatively 101) ;; value greater than 100 gets rid of half page jumping
@@ -81,9 +90,6 @@
 ;;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 ;;(setq scroll-step 1) ;; keyboard scroll one line at a time
-
-;;By default in Emacs, we don't have ability to select text, and then start typing and our new text replaces the selection.  Let's fix that!
-(delete-selection-mode t)
 
 ;;trim trailing white space on save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -105,12 +111,6 @@
 
 ;; Show only one active window when opening multiple files at the same time(while opening file directly from terminal).
 (add-hook 'window-setup-hook 'delete-other-windows)
-
-;; auto refresh or revert all buffers when changed from outside.
-(setq global-auto-revert-mode t)
-
-;; auto Refresh or Revert Dired and other buffers
-(setq global-auto-revert-non-file-buffers t)
 
 ;; Default Coding System
 (set-default-coding-systems 'utf-8)
@@ -256,8 +256,8 @@
     )
   )
 
-(global-set-key (kbd "C-S-<mouse-4>")  (lambda () (interactive) (add_one 1)) )
-(global-set-key (kbd "C-S-<mouse-5>") (lambda () (interactive) (add_one -1)) )
+(global-set-key (kbd "C-S-<mouse-4>") (lambda () (interactive) (add_one -1)) )
+(global-set-key (kbd "C-S-<mouse-5>")  (lambda () (interactive) (add_one 1)) )
 
 ;; Start the Emacs server from this instance so that all emacsclient calls are routed here
 (server-start)
