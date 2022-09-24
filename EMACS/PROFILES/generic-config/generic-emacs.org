@@ -259,6 +259,28 @@
 (global-set-key (kbd "C-S-<mouse-4>") (lambda () (interactive) (add_one -1)) )
 (global-set-key (kbd "C-S-<mouse-5>")  (lambda () (interactive) (add_one 1)) )
 
+(defun jj/word-wrap-on ()
+  (let ((inhibit-message t) ;; hide message from minibuffer
+        (message-log-max nil));; hide from *message*
+    (toggle-truncate-lines -1)
+    (toggle-word-wrap 1)
+    )
+  (message "jj/word-wrap enabled"))
+(defun jj/word-wrap-off ()
+  (let ((inhibit-message t) ;; hide message from minibuffer
+        (message-log-max nil));; hide from *message*
+    (toggle-truncate-lines 1)
+    (toggle-word-wrap -1)
+    )
+  (message "jj/word-wrap disabled"))
+
+(global-set-key (kbd "C-c w") (lambda ()
+                                (interactive)
+                                (if (and word-wrap (not truncate-lines))
+                                    (jj/word-wrap-off)
+                                  (jj/word-wrap-on)
+                                  )))
+
 ;; Start the Emacs server from this instance so that all emacsclient calls are routed here
 (server-start)
 
