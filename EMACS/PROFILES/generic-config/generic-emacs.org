@@ -50,6 +50,9 @@
 ;;(toggle-word-wrap 1) ;; with fringe indicators
 ;;(visual-line-mode 1) ;; without fringe indicators
 ;;(setq-default word-wrap t) ;; enable globally(but not works in org mode)
+;;(setq-default truncate-lines t) ;; enable globally(but not works in org mode)
+;;(setq truncate-partial-width-windows nil) ;; to make truncate-lines works in horizontal split screen
+;;(setq auto-hscroll-mode 'current-line) ;; horizontal auto scroll
 
 ;;turn on Hightlighting - matching - Parantheseis by default
 (show-paren-mode 1)
@@ -81,7 +84,6 @@
 ;; auto Refresh or Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
 
-
 ;;for smooth scrolling----------------------------------------
 ;;(setq scroll-conservatively 101) ;; value greater than 100 gets rid of half page jumping
 
@@ -90,6 +92,10 @@
 ;;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 ;;(setq scroll-step 1) ;; keyboard scroll one line at a time
+
+;; Horizontal scrolling mouse events (left/right)
+(global-set-key (kbd "<S-wheel-up>") (lambda () (interactive) (if truncate-lines (scroll-right 1))))
+(global-set-key (kbd "<S-wheel-down>") (lambda () (interactive) (if truncate-lines (scroll-left 1))))
 
 ;;trim trailing white space on save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -114,6 +120,12 @@
 
 ;; Default Coding System
 (set-default-coding-systems 'utf-8)
+
+;; Delete files to trash
+(setq-default  delete-by-moving-to-trash t)
+
+;; Add a margin when scrolling vertically
+(setq-default  scroll-margin 4)
 
 ;;Use spaces instead of tabs for indentation
 (setq-default indent-tabs-mode nil)
