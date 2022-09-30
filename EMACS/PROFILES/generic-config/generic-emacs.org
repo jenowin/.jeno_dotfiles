@@ -94,8 +94,8 @@
 ;;(setq scroll-step 1) ;; keyboard scroll one line at a time
 
 ;; Horizontal scrolling mouse events (left/right)
-(global-set-key (kbd "<S-wheel-up>") (lambda () (interactive) (if truncate-lines (scroll-right 1))))
-(global-set-key (kbd "<S-wheel-down>") (lambda () (interactive) (if truncate-lines (scroll-left 1))))
+(global-set-key (kbd "<S-mouse-4>") (lambda () (interactive) (if truncate-lines (scroll-right 1))))
+(global-set-key (kbd "<S-mouse-5>") (lambda () (interactive) (if truncate-lines (scroll-left 1))))
 
 ;;trim trailing white space on save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -335,8 +335,10 @@
            (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
 
          ;; The org-mode default font (overides every other fonts in org mode with one font if we set the below)
+         ;;(base-font-color     (face-foreground 'default nil 'default))
+         ;;(headline           `(:inherit default :weight bold :foreground ,base-font-color))
          (base-font-color     (face-foreground 'default nil 'default))
-         (headline           `(:inherit default :weight bold :foreground ,base-font-color))
+         (headline           `(:inherit default :weight bold))
          )
 
     (custom-theme-set-faces
