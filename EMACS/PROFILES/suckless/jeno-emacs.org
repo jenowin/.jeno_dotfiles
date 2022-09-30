@@ -194,8 +194,8 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
 #+end_src
 
 ** tweaked naysayer theme like jonathan blow
-#+begin_src
-(add-to-list 'custom-theme-load-path "~/.emacs.d/user_packages/naysayer-theme-tweaked.el/")
+#+begin_src emacs-lisp
+(add-to-list 'custom-theme-load-path "~/EMACS/SRC/naysayer-theme-tweaked.el/")
 (load-theme 'naysayer t)
 #+end_src
 
@@ -208,7 +208,7 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
 #+end_src
 
 ** modus themes
-#+begin_src emacs-lisp
+#+begin_src
 (use-package modus-themes
   :ensure t
   :init
