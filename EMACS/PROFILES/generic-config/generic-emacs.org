@@ -357,8 +357,9 @@
   (custom-theme-set-faces
    'user
    ;;'(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
-   '(variable-pitch ((t (:family "Calibri" :height 180 :weight thin))))
-   '(fixed-pitch ((t ( :family "consolas" :height 160)))))
+   '(variable-pitch ((t (:family "Iosevka Comfy Duo")))) ;; used for statusline by modus-themes.
+   ;; dont't use fixed height and weight because fonts in (display-line-number, org code-block, modelines) become static instead of dynamic
+   '(fixed-pitch ((t ( :family "consolas")))))
 
   ;;Configure faces for specific Org elements
   (custom-theme-set-faces
