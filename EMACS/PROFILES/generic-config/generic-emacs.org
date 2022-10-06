@@ -133,6 +133,8 @@
 ;; set indentation for js mode(changing the default indentation)
 (setq js-indent-level 2)
 
+(setq css-indent-offset 2)
+
 ;;set bookmark file location
 (setq bookmark-default-file "~/.emacs.d/bookmarks.txt")
 
