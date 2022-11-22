@@ -376,7 +376,7 @@
     '((t :foreground "#3C3C3C"
          :background "#F0F0F0"
          :overline "#A7A7A7"
-         :family "ETBembo "
+         :family "Source Sans Pro"
          :weight bold
          ;;:underline t
          ))
