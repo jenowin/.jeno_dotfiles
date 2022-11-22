@@ -156,14 +156,23 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
 #+begin_src emacs-lisp
 ;;A package for switching themes in Emacs interactively.
 (use-package theme-looper
- :ensure t
- :init
- :config
-(theme-looper-set-favorite-themes '(tango-dark wheatgrass broceliande))
-;;(global-set-key (kbd "C-|") 'theme-looper-select-theme))
+  :ensure t
+  :init
+  :config
+  (theme-looper-set-favorite-themes '(tango-dark wheatgrass broceliande))
+  ;;(global-set-key (kbd "C-|") 'theme-looper-select-theme)
 
-(global-set-key (kbd "C-`") 'theme-looper-select-theme-from-all) )
+  ;;(global-set-key (kbd "C-`") 'theme-looper-select-theme-from-all)
 
+  (global-set-key (kbd "C-`") (lambda ()
+                                (interactive)
+                                (progn
+                                  (theme-looper-select-theme-from-all)
+                                  (if custom-enabled-themes
+                                      (my/org-mode-fonts-quit)
+                                    (my/org-mode-fonts)
+                                    ))))
+  )
 #+end_src
 
 * themes
