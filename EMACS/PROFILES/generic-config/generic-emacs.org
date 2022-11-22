@@ -371,69 +371,58 @@
 
 (defun my/org-mode-fonts ()
   (interactive)
-  (let* ((variable-tuple
-          (cond
-           ;;((x-list-fonts "ETBembo")         '(:font "ETBembo"))
-           ;;((x-list-fonts "Arial")         '(:font "ETBembo"))
-           ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-           ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-           ((x-list-fonts "Verdana")         '(:font "Verdana"))
-           ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-           (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-
-         ;; The org-mode default font (overides every other fonts in org mode with one font if we set the below)
-         ;;(base-font-color     (face-foreground 'default nil 'default))
-         ;;(headline           `(:inherit default :weight bold :foreground ,base-font-color))
-         (base-font-color     (face-foreground 'default nil 'default))
-         (headline           `(:inherit default :weight bold))
-         )
-
-    (custom-theme-set-faces
-     'user
-     `(org-level-8 ((t (,@headline ,@variable-tuple))))
-     `(org-level-7 ((t (,@headline ,@variable-tuple))))
-     `(org-level-6 ((t (,@headline ,@variable-tuple))))
-     `(org-level-5 ((t (,@headline ,@variable-tuple))))
-     `(org-level-4 ((t (,@headline ,@variable-tuple ))))
-     `(org-level-3 ((t (,@headline ,@variable-tuple :height 0.9))))
-     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.1))))
-     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.25))))
-     `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+  ;; My own font face (similar to build in faces like default, fixed-pitch, variable-pitch)
+  (defface variable-tuple
+    '((t :foreground "#3C3C3C"
+         :background "#F0F0F0"
+         :overline "#A7A7A7"
+         :family "ETBembo "
+         :weight bold
+         ;;:underline t
+         ))
+    "Face for function parameters."
+    :group 'my-lang-mode )
+  (setq-local face-remapping-alist '((org-level-1 (:height 1.2) variable-tuple)
+                                     (org-level-2 (:height 1.1) variable-tuple)
+                                     (org-level-3 (:height 1.05) variable-tuple)
+                                     (org-level-4 (:height 1.0) variable-tuple)
+                                     (org-level-5 (:height 1.1) variable-tuple)
+                                     (org-level-6 (:height 1.1) variable-tuple)
+                                     (org-level-7 (:height 1.1) variable-tuple)
+                                     (org-level-8 (:height 1.1) variable-tuple)
+                                     (org-document-title (:height 1.5 :underline nil) variable-tuple)
 
 
-  (custom-theme-set-faces
-   'user
-   ;;'(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
-   '(variable-pitch ((t (:family "Iosevka Comfy Duo")))) ;; used for statusline by modus-themes.
-   ;; dont't use fixed height and weight because fonts in (display-line-number, org code-block, modelines) become static instead of dynamic
-   '(fixed-pitch ((t ( :family "consolas")))))
+                                     (org-block-begin-line
+                                      (:underline "#A7A6AA" :foreground "grey31" :background "#EAEAFF" :extend t))
+                                     (org-block fixed-pitch)
+                                     (org-code (:background "green") fixed-pitch)
+                                     (org-document-info (:foreground "dark orange"))
+                                     (org-document-info-keyword  fixed-pitch)
+                                     (org-indent  (org-hide fixed-pitch))
+                                     (org-link (:foreground "royal blue" :underline t))
+                                     (org-meta-line (font-lock-comment-face fixed-pitch))
+                                     (org-property-value  fixed-pitch)
+                                     (org-special-keyword (font-lock-comment-face fixed-pitch))
+                                     (org-table (:foreground "#83a598") fixed-pitch)
+                                     (org-tag (:weight bold :height 0.8) (shadow fixed-pitch))
+                                     (org-verbatim (shadow fixed-pitch))
+                                     )))
 
-  ;;Configure faces for specific Org elements
-  (custom-theme-set-faces
-   'user
-   '(org-block ((t (:inherit fixed-pitch))))
-   '(org-code ((t (:inherit (shadow fixed-pitch)))))
-   '(org-document-info ((t (:foreground "dark orange"))))
-   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-   '(org-link ((t (:foreground "royal blue" :underline t))))
-   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-   '(org-property-value ((t (:inherit fixed-pitch))) t)
-   '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-   '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-   '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
+(defun my/org-mode-fonts-quit()
+  (interactive)
+  (setq-local face-remapping-alist '((default variable-pitch default)))
   )
-
-;;(my/org-mode-fonts)
-
 #+end_src
 
 ** org tweaks
 #+begin_src emacs-lisp
 ;; First, we ask org-mode to hide the emphasis markup (e.g. /.../ for italics, *...* for bold, etc.):
 (setq org-hide-emphasis-markers t)
+
+;;(setq org-ellipsis "⤵")
+;;(setq org-ellipsis "↴")
 
 ;;Then, we set up a font-lock substitution for list markers (I always use “-” for lists, but you can change this if you want) by replacing them with a centered-dot character:
 (font-lock-add-keywords 'org-mode
