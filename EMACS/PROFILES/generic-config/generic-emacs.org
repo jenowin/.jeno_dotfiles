@@ -357,7 +357,7 @@
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil
-                    :family "Liberation Serif"
+                    :family "Source Code Pro"
                     :weight 'Regular)
 
 #+end_src
@@ -376,7 +376,7 @@
     '((t :foreground "#3C3C3C"
          :background "#F0F0F0"
          :overline "#A7A7A7"
-         :family "Source Code Pro"
+         :family "Liberation Sans"
          :weight bold
          ;;:underline t
          ))
