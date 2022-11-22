@@ -146,10 +146,47 @@
 
 ;;prevent backup files
 (setq make-backup-files nil)
+
+;; set default Line spacing
+(setq-default line-spacing 0)
+
+;; Line cursor and no blink
+(set-default 'cursor-type  '(bar . 1))
+(blink-cursor-mode 0)
+
+;; No Tooltips
+(tooltip-mode 0)
+
+;; No fringe but nice glyphs for truncated and wrapped lines
+(fringe-mode '(0 . 0))
+(defface fallback '((t :family "Fira Code Light"
+                       :inherit 'face-faded)) "Fallback")
+
+;; when trucate-line is enabled
+(set-display-table-slot standard-display-table 'truncation
+                        (make-glyph-code ?… 'fallback))
+
+;; when truncate-line and word-wrap is disabled or (default)
+(set-display-table-slot standard-display-table 'wrap
+                        (make-glyph-code ?↩ 'fallback))
+;; org-mode headings(outlines)
+(set-display-table-slot standard-display-table 'selective-display
+                        (string-to-vector " …"))
+
+
+;; hilight region
+(set-face-attribute 'region nil :background "#f0f0f0")
 #+end_src
 
 * editor tweaks
 #+begin_src emacs-lisp
+
+(setq default-frame-alist
+      (append (list ;;'(width  . 72) '(height . 40)
+                    '(internal-border-width . 12)
+                    ;;'(vertical-scroll-bars . nil)
+                    ;;'(font . "Roboto Mono Light 14")
+                    )))
 
 ;;Display buffer name in frame titles
 ;;(setq frame-title-format '("" invocation-name ": " (:eval (replace-regexp-in-string "^ +" "" (buffer-name)))))
