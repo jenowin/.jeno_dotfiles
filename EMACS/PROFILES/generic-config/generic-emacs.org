@@ -304,16 +304,24 @@
 ** default font
 #+begin_src emacs-lisp
 ;; set default font
-(cond
- ((string-equal system-type "windows-nt") ; Microsoft Windows
-  (when (member "Consolas" (font-family-list))
-    (set-frame-font "Consolas 14" t t)))
- ((string-equal system-type "darwin") ; macOS
-  (when (member "Menlo" (font-family-list))
-    (set-frame-font "Menlo 14" t t)))
- ((string-equal system-type "gnu/linux") ; linux
-  (when (member "DejaVu Sans Mono" (font-family-list))
-    (set-frame-font "DejaVu Sans Mono 14" t t))))
+;; Set the default font face based on platform
+(pcase system-type
+  ((or 'gnu/linux 'windows-nt 'cygwin)
+   (set-face-attribute 'default nil
+                       :family "DejaVu Sans Mono"
+                       :height 160
+                       :weight 'Regular))
+  ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
+
+;; Set the fixed pitch face
+(set-face-attribute 'fixed-pitch nil
+                    :family "Calibri"
+                    :weight 'Regular)
+
+;; Set the variable pitch face
+(set-face-attribute 'variable-pitch nil
+                    :family "Comic Sans MS"
+                    :weight 'Regular)
 
 #+end_src
 
