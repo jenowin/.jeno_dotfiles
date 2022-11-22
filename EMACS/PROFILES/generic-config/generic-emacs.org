@@ -345,19 +345,19 @@
 (pcase system-type
   ((or 'gnu/linux 'windows-nt 'cygwin)
    (set-face-attribute 'default nil
-                       :family "DejaVu Sans Mono"
-                       :height 160
+                       :family "JetBrains Mono"
+                       :height 180
                        :weight 'Regular))
   ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
 
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil
-                    :family "Calibri"
+                    :family "Monospace"
                     :weight 'Regular)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil
-                    :family "Comic Sans MS"
+                    :family "Liberation Serif"
                     :weight 'Regular)
 
 #+end_src
@@ -376,7 +376,7 @@
     '((t :foreground "#3C3C3C"
          :background "#F0F0F0"
          :overline "#A7A7A7"
-         :family "Source Sans Pro"
+         :family "Source Code Pro"
          :weight bold
          ;;:underline t
          ))
