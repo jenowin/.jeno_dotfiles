@@ -168,11 +168,11 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
                                 (interactive)
                                 (progn
                                   (theme-looper-select-theme-from-all)
-                                  (if custom-enabled-themes
+                                  (if (and custom-enabled-themes (string-equal mode-name "Org"))
                                       (my/org-mode-fonts-quit)
                                     (my/org-mode-fonts)
-                                    ))))
-  )
+                                    ))
+                                ))
 #+end_src
 
 * themes
@@ -343,13 +343,6 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
       (modus-themes-load-vivendi)))
   :bind ("<f6>" . modus-themes-toggle)
   )
-(custom-theme-set-faces
- 'user
- ;;'(variable-pitch ((t (:family "ETBembo" :height 180 :weight thin))))
-'(variable-pitch ((t (:family "Iosevka Comfy Duo")))) ;; used for statusline by modus-themes.
-;; dont't use fixed height and weight because fonts in (display-line-number, org code-block, modelines) become static instead of dynamic
-'(fixed-pitch ((t ( :family "consolas")))))
-
 #+end_src
 
 Exclude org mode fonts in modus-themes
