@@ -429,7 +429,8 @@
 
 (defun my/org-mode-fonts-quit()
   (interactive)
-  (setq-local face-remapping-alist '((default variable-pitch default)))
+  ;;(setq-local face-remapping-alist '((default variable-pitch default)))
+  (setq-local face-remapping-alist '((default)))
   )
 #+end_src
 
@@ -457,7 +458,7 @@
 ;;To make more horizontal space, the headlines are shifted by two characters. Configure org-indent-indentation-per-level variable for a different number(org-indent-mode)).
 (add-hook 'org-mode-hook (lambda()
                            (org-indent-mode)
-                           (variable-pitch-mode 1) ;; uses variable pitch fonts excluding headers and src blocks and affect font size for all fonts.
+                           ;;(variable-pitch-mode 1) ;; uses variable pitch fonts excluding headers and src blocks and affect font size for all fonts.
                            ))
 
 ;; Override modes in org mode.
