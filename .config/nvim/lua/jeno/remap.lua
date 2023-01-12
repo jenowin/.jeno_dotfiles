@@ -1,6 +1,7 @@
 local nnoremap = require("jeno.keymap").nnoremap
 
 nnoremap("<leader>pv", "<cmd>Ex<CR>")
+nnoremap("<leader>pl", "<cmd>Lex<CR>")
 
 
 -----------------------------------------------------------
@@ -80,3 +81,9 @@ map('n', '<leader>s', ':w<CR>')
 
 -- Close all windows and exit from Neovim with <leader> and q
 map('n', '<leader>q', ':qa!<CR>')
+
+map('n', '<leader>x', ':bd<CR>')
+
+map('n', '<C-S-n>', ':bn<CR>')
+
+map('n', '<C-S-p>', ':bp<CR>')
