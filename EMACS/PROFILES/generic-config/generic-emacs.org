@@ -151,7 +151,7 @@
 (setq-default line-spacing 0)
 
 ;; Line cursor and no blink
-(set-default 'cursor-type  '(bar . 1))
+(set-default 'cursor-type  '(bar . 5))
 (blink-cursor-mode 0)
 
 ;; No Tooltips
