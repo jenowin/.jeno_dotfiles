@@ -340,26 +340,43 @@
 * Fonts
 ** default font
 #+begin_src emacs-lisp
-;; set default font
 ;; Set the default font face based on platform
 (pcase system-type
   ((or 'gnu/linux 'windows-nt 'cygwin)
    (set-face-attribute 'default nil
-                       :family "JetBrains Mono"
-                       :height 180
+                       :family "Monospace"
+                       :height 220
                        :weight 'Regular))
   ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
 
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil
-                    :family "Monospace"
+                    :family "Iosevka Comfy Duo"
                     :weight 'Regular)
 
-;; Set the variable pitch face
+;; Set the variable pitch face (also enabled in variabe pitch mode), it is an proportional fonts for the buffers.
 (set-face-attribute 'variable-pitch nil
-                    :family "Source Code Pro"
+                    :family "JetBrains Mono"
                     :weight 'Regular)
 
+
+(set-face-attribute 'mode-line nil
+                    ;;:background "#d0d6ff"
+                    ;;:foreground "black"
+                    ;;:box '(:line-width 8 :color "#d0d6ff")
+                    :family "Liberation Sans"
+                    :weight 'Regular
+                    :overline nil
+                    :underline nil)
+
+(set-face-attribute 'mode-line-inactive nil
+                    ;;:background "#efefef"
+                    ;;:foreground "black"
+                    ;;:box '(:line-width 8 :color "#efefef")
+                    :family "Liberation Sans"
+                    :weight 'Regular
+                    :overline nil
+                    :underline nil)
 #+end_src
 
 ** org fonts
