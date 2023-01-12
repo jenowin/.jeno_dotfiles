@@ -1,8 +1,30 @@
 !! Transparency (0-1):
 !!XTerm.alpha: 0.8
 
-!! font
-xterm*faceName: DejaVu Sans Mono:pixelsize=26
+
+!! static font size
+!! xterm*faceName: JetBrains Mono Nerd Font:pixelsize=26
+
+!! dynamic font size
+xterm*faceName: DejaVu Sans Mono
+xterm*faceSize: 26
+
+! VT Font Menu: Unreadable
+xterm*faceSize1: 8
+! VT font menu: Tiny
+xterm*faceSize2: 10
+! VT font menu: Medium
+xterm*faceSize3: 12
+! VT font menu: Large
+xterm*faceSize4: 16
+! VT font menu: Huge
+xterm*faceSize5: 22
+
+xterm*VT100.Translations: #override \
+    Ctrl <Key> minus: smaller-vt-font() \n\
+    Ctrl <Key> plus: larger-vt-font() \n\
+    Ctrl <Key> 0: set-vt-font(d)
+
 
 ! start with TrueType fonts disabled
 !XTerm.vt100.renderFont: false
