@@ -43,20 +43,41 @@
         evil-want-keybinding nil
         evil-vsplit-window-right t
         evil-split-window-below t
-        evil-want-C-i-jump nil
         evil-want-C-u-scroll t
-
         ;; set cursor style
-        evil-emacs-state-cursor '(box)
-        evil-normal-state-cursor '(box)
-        evil-visual-state-cursor '(box)
-        evil-insert-state-cursor '(box))
+        evil-emacs-state-cursor '(bar)
+        evil-normal-state-cursor '(bar)
+        evil-visual-state-cursor '(bar)
+        evil-insert-state-cursor '(bar))
   :config
   (evil-mode 1)
   ;; toggle org headers(0-n) using tab key in normal mode
   (with-eval-after-load 'evil-maps (define-key evil-motion-state-map (kbd "TAB") nil))
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  ;;(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+  (general-evil-setup)
+  (general-nmap :prefix "SPC" "m" 'evil-motion-state) ;; default :states
+  (general-mmap "m" 'evil-normal-state) ;; motion state (normal, visual, and operator state)
+
+  (defun evil-cursor-shapes(x &optional e m n i v r)
+    (interactive (list (completing-read "My prompt: " '("default" "box" "bar"))) )
+    (cond
+     ((string= x "default")
+      (progn (setq e 'box m e n e i 'bar v 'hbar r v) (message "Default!")))
+     ((string= x "box")
+      (progn (setq e 'box m e n e i e v e r e) (message "Box!") ))
+     ((string= x "bar")
+      (progn (setq e 'bar m e n e i e v e r e) (message "Bar!") ))
+     )
+    (setq evil-default-state 'normal ;; (normal, insert, emacs, visual...) when switching to new buffer
+          evil-emacs-state-cursor e  ;; C-z
+          evil-motion-state-cursor m ;; SPC m and m
+          evil-normal-state-cursor n
+          evil-insert-state-cursor i
+          evil-visual-state-cursor v
+          evil-replace-state-cursor r))
+  (define-key evil-normal-state-map (kbd "C-c c") (lambda() (interactive) (call-interactively #'evil-cursor-shapes)))
   )
 
 ;; use evil undo system
