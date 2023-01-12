@@ -43,7 +43,7 @@
         evil-want-keybinding nil
         evil-vsplit-window-right t
         evil-split-window-below t
-        evil-want-C-u-scroll t
+        evil-want-C-u-scroll t)
   :config
   (evil-mode 1)
   ;; toggle org headers(0-n) using tab key in normal mode
@@ -188,7 +188,7 @@ Org-tempo is a package that allows for '<s' followed by TAB to expand to a begin
                                       (my/org-mode-fonts-quit)
                                     (my/org-mode-fonts)
                                     ))
-                                ))
+                                )) )
 #+end_src
 
 * themes
@@ -468,12 +468,4 @@ Exclude org mode fonts in modus-themes
     )
   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
   )
-#+end_src
-
-* experiment
-#+begin_src
-toggle fonts for org mode using function , ref: system crafters secret to org presentation videos
-toggle to my/org-mode-fonts and defaults, so here we want to replace custom set font setting, so that it can toggled.(refer system crafters)
-
-similarly toggle colors of the org headers instead of setting persistently
 #+end_src
