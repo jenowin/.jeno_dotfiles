@@ -44,11 +44,6 @@
         evil-vsplit-window-right t
         evil-split-window-below t
         evil-want-C-u-scroll t
-        ;; set cursor style
-        evil-emacs-state-cursor '(bar)
-        evil-normal-state-cursor '(bar)
-        evil-visual-state-cursor '(bar)
-        evil-insert-state-cursor '(bar))
   :config
   (evil-mode 1)
   ;; toggle org headers(0-n) using tab key in normal mode
