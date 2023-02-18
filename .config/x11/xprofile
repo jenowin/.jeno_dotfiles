@@ -4,4 +4,5 @@
 # load Xresources
 # do not background the xrdb command, otherwise, programs launched
 # after xrdb may look for resources before it has finished loading them
-xrdb -I "${XDG_CONFIG_HOME:-$HOME/.config}/x11" "${XDG_CONFIG_HOME:-$HOME/.config}/x11/Xresources"
+#xrdb -I "${XDG_CONFIG_HOME:-$HOME/.config}/x11" "${XDG_CONFIG_HOME:-$HOME/.config}/x11/Xresources"
+xrdb -I "${XDG_CONFIG_HOME:-$HOME/.config}/x11/Xresources"
