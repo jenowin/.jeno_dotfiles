@@ -345,12 +345,16 @@
 
 ;; Set the default font face based on platform
 (pcase system-type
-  ((or 'gnu/linux 'windows-nt 'cygwin)
+  ((or 'darwin 'windows-nt 'cygwin)
    (set-face-attribute 'default nil
                        :family "consolas"
                        :height 160
                        :weight 'Regular))
-  ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
+  ('gnu/linux
+   (set-face-attribute 'default nil
+                       :family "Monospace"
+                       :height 170
+                       :weight 'Regular)))
 
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil
