@@ -26,10 +26,10 @@
 ;;(setq display-line-numbers-type 'relative)
 ;;(add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)  ))
 ;; Enable line numbers for some modes
-(dolist (mode '(text-mode-hook
-                prog-mode-hook
-                conf-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 1) (hl-line-mode) )))
+;;(dolist (mode '(text-mode-hook
+;;                prog-mode-hook
+;;                conf-mode-hook))
+;;  (add-hook mode (lambda () (display-line-numbers-mode 1) (hl-line-mode) )))
 
 ;; relative number on normal mode and absolute number for insert mode--------------------------------------
 ;; (add-hook 'prog-mode-hook ' (lambda ()
@@ -56,6 +56,8 @@
 
 ;;turn on Hightlighting - matching - Parantheseis by default
 (show-paren-mode 1)
+;; make brackets weight to regular/extra-bold
+;;(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 
 ;;creating pair brackets by auto
 (electric-pair-mode 1)
@@ -76,10 +78,10 @@
 ;;(display-time-mode 1)
 
 ;;By default in Emacs, we don't have ability to select text, and then start typing and our new text replaces the selection.  Let's fix that!
-(delete-selection-mode t)
+(delete-selection-mode 1)
 
 ;; auto refresh or revert all buffers when changed from outside.
-(global-auto-revert-mode t)
+(global-auto-revert-mode 1)
 
 ;; auto Refresh or Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
@@ -94,20 +96,32 @@
 ;;(setq scroll-step 1) ;; keyboard scroll one line at a time
 
 ;; Horizontal scrolling mouse events (left/right)
-(global-set-key (kbd "<S-mouse-4>") (lambda () (interactive) (if truncate-lines (scroll-right 1))))
-(global-set-key (kbd "<S-mouse-5>") (lambda () (interactive) (if truncate-lines (scroll-left 1))))
+(global-set-key (kbd "<S-wheel-up>") (lambda () (interactive) (if truncate-lines (scroll-right 1))))
+(global-set-key (kbd "<S-wheel-down>") (lambda () (interactive) (if truncate-lines (scroll-left 1))))
 
 ;;trim trailing white space on save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; change all prompts to y or n instead of yes or no
 ;;(fset 'yes-or-no-p 'y-or-n-p)
-; for Emacs28, replaces the defalias below
+                                        ; for Emacs28, replaces the defalias below
 (setq use-short-answers t)
 ;; (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;only cycle through buffers with associated files.
-(set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
+;;(set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
+
+(defun my-set-buffer-predicate ()
+  (interactive)
+  (set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name))
+
+;; for framaes in emacsclient
+(add-hook 'after-make-frame-functions
+          (lambda
+            (frame) (with-selected-frame frame (my-set-buffer-predicate) )))
+
+;; for initial frames
+(my-set-buffer-predicate)
 
 ;;Don't show initial Emacs-logo and info
 (setq inhibit-splash-screen t)
@@ -159,8 +173,9 @@
 
 ;; No fringe but nice glyphs for truncated and wrapped lines
 (fringe-mode '(0 . 0))
-(defface fallback '((t :family "Fira Code Light"
-                       :inherit 'face-faded)) "Fallback")
+
+
+(defface fallback '((t :family "Fira Code Light" :inherit 'face-faded)) "Fallback")
 
 ;; when trucate-line is enabled
 (set-display-table-slot standard-display-table 'truncation
@@ -173,20 +188,20 @@
 (set-display-table-slot standard-display-table 'selective-display
                         (string-to-vector " …"))
 
-
-;; hilight region
-(set-face-attribute 'region nil :background "#f0f0f0")
+;; hilight region (problem: hilight applies in emacsclient even after loading theme)
+;;(set-face-attribute 'region nil :background "#f0f0f0")
 #+end_src
 
 * editor tweaks
 #+begin_src emacs-lisp
 
+;; default-frame-aliast will override other default-frame-aliast
 (setq default-frame-alist
       (append (list ;;'(width  . 72) '(height . 40)
-                    '(internal-border-width . 12)
-                    ;;'(vertical-scroll-bars . nil)
-                    ;;'(font . "Roboto Mono Light 14")
-                    )))
+               '(internal-border-width . 12)
+               ;;'(vertical-scroll-bars . nil)
+               ;;'(font . "Roboto Mono Light 14")
+               )))
 
 ;;Display buffer name in frame titles
 ;;(setq frame-title-format '("" invocation-name ": " (:eval (replace-regexp-in-string "^ +" "" (buffer-name)))))
@@ -252,30 +267,6 @@
      (concat "Hidden Mode Line Mode enabled.  "
              "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
-
-;; recentf (Built-in)
-;;--------------------------------------------------------------------------
-(require 'recentf)
-
-;; get rid of `find-file-read-only' and replace it with something
-;; more useful.
-(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
-;;(nvmap :prefix "SPC" "f r"   '( ido-recentf-open :which-key "Find recent file"))
-
-;; enable recent files mode.
-(recentf-mode t)
-
-;; 5 files ought to be enough.
-(setq recentf-max-saved-items 5)
-
-(defun ido-recentf-open ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
-;;----------------------------------------------------------------------------
-
 (defun toggle-top-menu ()
   "Run toggle-menu-bar-mode-from-frame and toggle-tool-bar-mode-from-frame"
   (interactive)
@@ -286,29 +277,41 @@
 ;; increase/decrease Opacity of the GUI
 (setq opaque_level 100)
 (defun add_one (value)
+  (interactive)
   (catch 'except
-    (interactive)
-    (cond ((eql value 1 )
-	   (cond ((eql opaque_level 0)
-		  (message "Reached the least opacity level!")
-		  (throw 'except nil)
-		  ) )
-	   (setq opaque_level (1- opaque_level))
-	   (message "opacity level: %d" opaque_level)
-	   (set-frame-parameter (selected-frame) 'alpha opaque_level) )
-	  ((eql value -1)
-	   (cond ((eql opaque_level 100)
-		  (message "Reached the max opacity level!")
-		  (throw 'except nil)
-		  ) )
-	   (setq opaque_level (1+ opaque_level))
-	   (message "opacity level: %d" opaque_level)
-	   (set-frame-parameter (selected-frame) 'alpha opaque_level) ) )
-    )
+    (let ()
+      (cond ((eql value -1 )
+             (cond ((eql opaque_level 0)
+                    ;;(message "Reached the least opacity level!")
+                    ;;(throw 'except "Reached the least opacity level!")
+                    (user-error "Reached the least opacity level!")
+                    ) )
+             (setq opaque_level (1- opaque_level))
+             (set-frame-parameter (selected-frame) 'alpha opaque_level)
+             (message "opacity level decreasing...")
+             ;;(message "opacity level: %d" opaque_level)
+             ;;(throw 'except (format "opacity level: %d" opaque_level))
+             ;;(throw 'except "opacity level decreasing...")
+             )
+            ((eql value 1)
+             (cond ((eql opaque_level 100)
+                    ;;(message "Reached the max opacity level!")
+                    ;;(throw 'except "Reached the max opacity level!")
+                    (user-error "Reached the max opacity level!")
+                    ) )
+             (setq opaque_level (1+ opaque_level))
+             (set-frame-parameter (selected-frame) 'alpha opaque_level)
+             (message "opacity level increasing...")
+             ;;(message "opacity level: %d" opaque_level)
+             ;;(throw 'except (format "opacity level: %d" opaque_level))
+             ;;(throw 'except "opacity level increasing...")
+             ) )
+      ))
   )
 
-(global-set-key (kbd "C-S-<mouse-4>") (lambda () (interactive) (add_one -1)) )
-(global-set-key (kbd "C-S-<mouse-5>")  (lambda () (interactive) (add_one 1)) )
+(global-set-key (kbd "<C-S-wheel-up>") (lambda () (interactive) (add_one 1)) )
+(global-set-key (kbd "<C-S-wheel-down>")  (lambda () (interactive) (add_one -1)) )
+
 
 (defun jj/word-wrap-on ()
   (let ((inhibit-message t) ;; hide message from minibuffer
@@ -334,18 +337,18 @@
 
 ;; Start the Emacs server from this instance so that all emacsclient calls are routed here
 (server-start)
-
 #+end_src
 
 * Fonts
 ** default font
 #+begin_src emacs-lisp
+
 ;; Set the default font face based on platform
 (pcase system-type
   ((or 'gnu/linux 'windows-nt 'cygwin)
    (set-face-attribute 'default nil
-                       :family "Monospace"
-                       :height 220
+                       :family "consolas"
+                       :height 160
                        :weight 'Regular))
   ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 170)))
 
@@ -377,6 +380,15 @@
                     :weight 'Regular
                     :overline nil
                     :underline nil)
+;;(set-face-attribute 'font-lock-comment-face nil
+;;                    :slant 'italic)
+;;(set-face-attribute 'font-lock-keyword-face nil
+;;                    ;;:slant 'italic
+;;                    :weight 'Bold)
+
+;; like sublime syntax on c, cpp, c#
+;;(set-face-attribute 'font-lock-type-face nil
+;;                    :slant 'italic)
 #+end_src
 
 ** org fonts
@@ -393,7 +405,7 @@
     '((t :foreground "#3C3C3C"
          :background "#F0F0F0"
          :overline "#A7A7A7"
-         :family "Liberation Sans"
+         :family "ETBembo "
          :weight bold
          ;;:underline t
          ))
@@ -489,6 +501,7 @@
 
 ;; ESC to act as quit(only for interactive situations not for combinatino of key sequence)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
 #+end_src
 
 * jeno's key
