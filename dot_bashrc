@@ -1,4 +1,4 @@
-# .bashrc is only sourced when accessing c:\cygwin\bin\bash.exe from any shells but 
+# .bashrc is only sourced when accessing c:\cygwin\bin\bash.exe from any shells but
 # .bash_profile is only sourced in mintty terminal
 # to solve that here is the solution
 if [ -f ~/.bash_profile ]
