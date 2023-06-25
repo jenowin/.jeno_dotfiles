@@ -1,11 +1,16 @@
 #!usr/bin/sh
 
-alias vc='nvim --clean -c "syntax enable | set nu | set mouse=a | set clipboard=unnamed | set expandtab | set autoindent | set shiftwidth=2 | set softtabstop=2 | set tabstop=2 | set smarttab | set scrolloff=4"'
+alias zrc="nvim ~/.config/zsh/.zshrc"
 alias brc="nvim ~/.bashrc"
+alias src="source ~/.config/zsh/.zshrc"
+
+alias v="vim"
+alias n="nvim"
+alias vc='nvim --clean -c "syntax enable | set nu | set mouse=a | set clipboard=unnamed | set expandtab | set autoindent | set shiftwidth=2 | set softtabstop=2 | set tabstop=2 | set smarttab | set scrolloff=4"'
+
 alias cls=clear
 alias q=exit
 
-alias em="emacs --with-profile jen "
-alias emn="emacs --with-profile jen -nw"
+alias em="emacs --with-profile doom > /dev/null 2>&1"
 alias at='alacritty-themes'
 alias dtf="/usr/bin/git --git-dir=$HOME/.jeno_dotfiles/ --work-tree=$HOME"
