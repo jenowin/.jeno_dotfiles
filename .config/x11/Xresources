@@ -21,12 +21,6 @@ xterm*faceSize4: 16
 ! VT font menu: Huge
 xterm*faceSize5: 22
 
-xterm*VT100.Translations: #override \
-    Ctrl <Key> minus: smaller-vt-font() \n\
-    Ctrl <Key> plus: larger-vt-font() \n\
-    Ctrl <Key> 0: set-vt-font(d)
-
-
 ! start with TrueType fonts disabled
 !XTerm.vt100.renderFont: false
 
