@@ -5,9 +5,11 @@
 
 # Default programs:
 export EDITOR="nvim"
-export TERMINAL="alacritty"
+#export TERMINAL="alacritty"
+export TERMINAL="xterm"
 export BROWSER="brave"
-export PATH="$HOME/.config/emacs/profiles/doom/bin/:$PATH"
+export PATH="$HOME/.config/emacs/profiles/doomemacs/bin/:$PATH"
+export PATH="$HOME/.nix-profile/bin/:$PATH"
 
 # XDG base directory
 export XDG_CONFIG_HOME="$HOME/.config"
