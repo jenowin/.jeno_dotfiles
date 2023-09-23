@@ -1,6 +1,9 @@
 !! Transparency (0-1):
 !!XTerm.alpha: 0.8
 
+!! Xcursor.size: 80
+Xft.dpi: 125
+
 !! static font size
 !! xterm*faceName: JetBrains Mono Nerd Font:pixelsize=26
 
