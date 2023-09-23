@@ -2,12 +2,11 @@
 
 # xinitrc runs automatically when you run startx.
 
-xrandr --output HDMI-1-0 --mode 1920x1080 --left-of eDP1 --mode 1920x1080
+# xrandr --output HDMI-1-0 --mode 1920x1080 --right-of eDP1 --mode 1920x1080
 #picom -b --experimental-backends
-xset r rate 350 50
 
 # set this xwallpaper command last and before executing window manager.
-#xwallpaper --output HDMI-1-0 --stretch ~/.local/share/backgrounds/arch2.jpg --output eDP1 --stretch ~/.local/share/backgrounds/arch1.jpg 
+#xwallpaper --output HDMI-1-0 --stretch ~/.local/share/backgrounds/arch2.jpg --output eDP1 --stretch ~/.local/share/backgrounds/arch1.jpg
 
 
 # There are some small but important commands that need to be run when we start
@@ -22,4 +21,5 @@ else
 	. "$HOME/.xprofile"
 fi
 
-ssh-agent dwm 
+ssh-agent dwm
+# xset r rate 350 50 # will be overwritten
