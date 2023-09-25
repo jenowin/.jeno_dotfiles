@@ -10,7 +10,13 @@ alias vc='nvim --clean -c "syntax enable | set nu | set mouse=a | set clipboard=
 
 alias cls=clear
 alias q=exit
-
-alias em="emacs --with-profile doom > /dev/null 2>&1"
 alias at='alacritty-themes'
 alias dtf="/usr/bin/git --git-dir=$HOME/.jeno_dotfiles/ --work-tree=$HOME"
+
+alias em="emacs --with-profile doom > /dev/null 2>&1"
+alias e="setsid emacsclient -s user &> /dev/null"
+
+alias em3="~/emacs_src/emacs/src/emacs"
+alias pr="~/emacs_src/emacs/src/emacs --with-profile prot"
+
+alias bty="upower -i /org/freedesktop/UPower/devices/battery_BAT1 | grep 'time to empty\|percentage'"
